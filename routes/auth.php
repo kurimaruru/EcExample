@@ -11,11 +11,11 @@ use App\Http\Controllers\User\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/register', [RegisteredUserController::class, 'create'])
-                ->middleware('guest')
-                ->name('register');
+->middleware('guest')
+->name('register');
 
 Route::post('/register', [RegisteredUserController::class, 'store'])
-                ->middleware('guest');
+->middleware('guest');
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
                 ->middleware('guest')
@@ -41,24 +41,24 @@ Route::post('/reset-password', [NewPasswordController::class, 'store'])
                 ->name('password.update');
 
 Route::get('/verify-email', [EmailVerificationPromptController::class, '__invoke'])
-                ->middleware('auth:user')
+                ->middleware('auth')
                 ->name('verification.notice');
 
 Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
-                ->middleware(['auth:user','signed', 'throttle:6,1'])
+                ->middleware(['auth', 'signed', 'throttle:6,1'])
                 ->name('verification.verify');
 
 Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-                ->middleware(['auth:user,', 'throttle:6,1'])
+                ->middleware(['auth', 'throttle:6,1'])
                 ->name('verification.send');
 
 Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])
-                ->middleware('auth:user,')
+                ->middleware('auth')
                 ->name('password.confirm');
 
 Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store'])
-                ->middleware('auth:user,');
+                ->middleware('auth');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-                ->middleware('auth:user,')
+                ->middleware('auth')
                 ->name('logout');
