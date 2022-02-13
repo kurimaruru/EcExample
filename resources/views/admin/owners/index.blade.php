@@ -32,9 +32,10 @@
                         class="md:px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br">
                         編集
                       </th>
-                      {{-- <th
+                      <th
                         class="md:px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br">
-                      </th> --}}
+                        削除
+                      </th>
                   </thead>
                   <tbody>
                     @foreach ($owners as $owner)
@@ -46,15 +47,16 @@
                         <button onclick="location.href='{{ route('admin.owners.edit', ['owner' => $owner->id ])}}'"
                           class="text-black bg-indigo-400 border-0 py-2 px-4 focus:outline-none hover:bg-indigo-500 rounded ">編集</button>
                       </td>
-                      {{-- <form id="delete_{{$owner->id}}" method="post"
+                      <form id="delete_{{$owner->id}}" method="post"
                         action="{{ route('admin.owners.destroy', ['owner' => $owner->id ] )}}">
                         @csrf
+                        {{-- 擬似フォームメソッド --}}
                         @method('delete')
                         <td class="md:px-4 py-3">
                           <a href="#" data-id="{{ $owner->id }}" onclick="deletePost(this)"
-                            class="text-white bg-red-400 border-0 py-2 px-4 focus:outline-none hover:bg-red-500 rounded ">削除</a>
+                            class="text-black bg-red-400 border-0 py-2 px-4 focus:outline-none hover:bg-red-500 rounded ">削除</a>
                         </td>
-                      </form> --}}
+                      </form>
                     </tr>
                     @endforeach
                   </tbody>

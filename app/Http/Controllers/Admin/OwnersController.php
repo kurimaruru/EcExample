@@ -126,6 +126,19 @@ class OwnersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $owner=Owner::findOrFail($id)->delete();//ソフトデリート
+        return redirect()->route('admin.owners.index');
+
     }
+
+    public function expiredOwnerIndex(){
+        $expiredOwner = Owner::onlyTrashed()->get();
+        return view('admin.expired-owners',compact('expiredOwner'));
+    }
+
+    public function expiredOwnerDestroy($id){
+        Owner::onlyTrashed()->findOrFail($id)->forceDelete();
+        return redirect()->route('admin.expired-owners.index');
+    }
+
 }
