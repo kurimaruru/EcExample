@@ -25,7 +25,7 @@ class ShopSeeder extends Seeder
         ]);
 
         DB::table('shops')->insert([
-        'owner_id' => 1,
+        'owner_id' => 2,
         'name' => 'ここに店名が入ります。',
         'information' => 'ここに店名が入ります。ここに店名が入ります。ここに店名が入ります。',
         'filename' => '',

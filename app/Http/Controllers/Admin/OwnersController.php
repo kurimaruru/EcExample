@@ -8,7 +8,9 @@ use App\Models\Owner; //Eloquent
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Log;
+use Throwable;
+use App\Models\Shop;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -67,11 +69,30 @@ class OwnersController extends Controller
         'password' => 'required|string|confirmed|min:8',
         ]);
 
-        Owner::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-        ]);
+        try{
+            //コミットとロールバックの処理を書かなくても自動で
+            DB::transaction(function() use($request){
+                $owner = Owner::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                ]);
+
+                Shop::create([
+                    'owner_id' => $owner->id,
+                    'name' => '店名を入力してください。',
+                    'information' => '',
+                    'filename' => '',
+                    'is_selling'=> ''
+                ]);
+            },2);//トランザクションエラー時２回繰り返す。
+        }catch(Throwable $e){
+            //ログ書き込み
+            Log::error($e);
+            throw $e;
+        }
+
+
 
         return redirect()->route('admin.owners.index');
         // ->with('message','オーナーを登録しました。');
